@@ -106,3 +106,7 @@ include the Docker host's address. The host needs CIFS support
 - Nothing listens on the network: Remote Control connects outbound to Anthropic.
   The GhidraMCP server binds to `127.0.0.1` only.
 - Images are pulled through `mirror.gcr.io` to avoid Docker Hub's anonymous rate limit.
+
+## License
+
+[GPL-3.0](LICENSE). Ghidra, GhidraMCP and the other tools the image downloads keep their own licenses.
