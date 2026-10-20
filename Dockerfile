@@ -60,7 +60,7 @@ RUN groupadd -g "$GID" claude && useradd -m -u "$UID" -g "$GID" -s /bin/bash cla
  && chmod 0440 /etc/sudoers.d/claude \
  && mkdir -p /workspace && chown claude:claude /workspace
 
-COPY entrypoint.sh merge-config.py /opt/claude-rc/
+COPY entrypoint.sh merge-config.py guard.py /opt/claude-rc/
 RUN chmod 0755 /opt/claude-rc/entrypoint.sh
 
 USER claude

@@ -79,6 +79,45 @@ Put secrets in `.env` and reference them as `${NAME}`. The file is merged into
 
 Skills placed in `config/skills/<name>/SKILL.md` are copied into `~/.claude/skills` at start.
 
+### Approval rules
+
+Even in `auto` mode, sessions stop and ask in the app before destructive MCP
+calls. Examples: stopping or deleting a Portainer stack, restarting Home
+Assistant, restoring or deleting a backup, installing an update, or any UniFi
+change. Reads and normal file edits run without prompts.
+
+[`config/permission-rules.json`](config/permission-rules.json) defines the
+rules. Like the MCP servers, you can copy it to
+`config/permission-rules.local.json` (git-ignored) to customize it. On every
+start, `merge-config.py` writes the rules into `~/.claude/settings.json`, only
+for servers that are configured:
+
+- **`ask`**: tools that always prompt. They become `permissions.ask` rules
+  (`mcp__<server>__<tool>`). Ask rules prompt in every permission mode, and
+  auto mode can't approve them on its own.
+- **`guard`**: tools that both read and write, such as Portainer's
+  `docker_proxy`, `ha_manage_backup`, `ha_manage_updates`, `ha_manage_app`,
+  `ha_call_service` and every UniFi tool. Settings rules can't match MCP tool
+  arguments, so a `PreToolUse` hook ([`guard.py`](guard.py)) checks each call.
+  It returns `ask` for writes: a non-GET method, a backup restore or delete,
+  an update install, a `hassio.*` service, or a UniFi tool that isn't a
+  get/list read. Reads go through untouched. If the hook itself fails, it
+  asks rather than letting the call run.
+- **`disableBypassPermissionsMode`**: when `true`, the default, Claude Code
+  refuses `bypassPermissions`. Set it to `false` if you set
+  `RC_PERMISSION_MODE=bypassPermissions`.
+
+The servers map ties each name in `mcp-servers.json` to a rule group. If you
+rename a server, rename it there too. The script replaces only the rules and
+hook it wrote itself, so rules you add to `settings.json` by hand are kept.
+Delete the rules file to remove them all. Ask prompts show up in the Claude
+app. To get a push notification when one is waiting, turn on
+**Push when actions required** in Claude Code's `/config` menu.
+
+These rules aren't a sandbox. A session with Bash can still call the same
+APIs with `curl`, using the tokens from `.env`, and only the permission mode
+stands in the way. Scoped tokens remain the real limit (see below).
+
 ### SMB / Home Assistant config mounts
 
 Enable the overlay and fill in the `SMB1_*` / `SMB2_*` variables:
@@ -101,7 +140,8 @@ include the Docker host's address. The host needs CIFS support
 
 - Everything Claude does from the app runs inside this container, with
   passwordless `sudo` inside it, network access to your LAN, and write access to
-  mounted shares. Choose `RC_PERMISSION_MODE` with that in mind.
+  mounted shares. Choose `RC_PERMISSION_MODE` with that in mind; the
+  approval rules above add prompts for destructive MCP calls only.
 - `.env` values are visible to processes in the container (and so to Claude).
   Use scoped, least-privilege tokens where the service allows it.
 - Nothing listens on the network: Remote Control connects outbound to Anthropic.

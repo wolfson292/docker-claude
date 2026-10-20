@@ -1,0 +1,44 @@
+{
+  "_comment": "Approval prompts for destructive MCP calls; see README 'Approval rules'. 'servers' maps each server name in mcp-servers.json to a rule group. 'ask' tools always prompt; 'guard' tools go through guard.py, which prompts only for writes ('*' = every tool on that server). Servers not configured are skipped.",
+  "servers": {
+    "portainer": "portainer",
+    "home-assistant-1": "home_assistant",
+    "home-assistant-2": "home_assistant",
+    "unifi-network": "unifi",
+    "unifi-protect": "unifi"
+  },
+  "ask": {
+    "portainer": [
+      "StackDelete", "StackDeleteKubernetesByName", "StackStop", "StackStart", "StackUpdate", "StackUpdateGit",
+      "StackGitRedeploy", "StackMigrate", "StackAssociate",
+      "StackCreateDockerStandaloneFile", "StackCreateDockerStandaloneRepository", "StackCreateDockerStandaloneString",
+      "StackCreateDockerSwarmFile", "StackCreateDockerSwarmRepository", "StackCreateDockerSwarmString",
+      "StackCreateKubernetesFile", "StackCreateKubernetesGit", "StackCreateKubernetesUrl",
+      "StacksWebhookInvoke", "EdgeStackWebhookInvoke", "endpointForceUpdateService",
+      "EndpointCreate", "EndpointCreateGlobalKey", "EndpointDelete", "EndpointDeleteBatch", "EndpointDeleteBatchDeprecated",
+      "EndpointUpdate", "EndpointSettingsUpdate", "EndpointAssociationDelete", "EndpointUpdateRelations", "TrustEdgeEndpoints",
+      "SettingsUpdate", "SettingsExperimentalUpdate", "SettingsAdditionalFunctionalityUpdate", "DefaultRegistryUpdate",
+      "systemUpdate", "Upload_a_file_under_a_specific_path_on_the_file_system_o",
+      "HelmInstall", "HelmDelete", "HelmRollback", "HelmUserRepositoryCreate", "HelmUserRepositoryDelete",
+      "DeleteClusterRoleBindings", "DeleteClusterRoles", "DeleteCronJobs", "DeleteJobs", "DeleteKubernetesIngresses",
+      "DeleteKubernetesNamespace", "DeleteKubernetesPersistentVolumeClaims", "DeleteKubernetesPersistentVolumes",
+      "DeleteKubernetesPod", "DeleteKubernetesServices", "DeleteKubernetesStorageClasses", "DeleteRoleBindings",
+      "DeleteRoles", "DeleteServiceAccounts", "deleteKubernetesClusterScopedCustomResource",
+      "deleteKubernetesCustomResourceDefinition", "deleteKubernetesNamespacedCustomResource",
+      "drainNode", "RestartKubernetesPod", "restartKubernetesApplication"
+    ],
+    "home_assistant": [
+      "ha_restart",
+      "ha_remove_device", "ha_remove_entity", "ha_remove_helpers_integrations", "ha_remove_area_or_floor", "ha_remove_zone",
+      "ha_config_remove_automation", "ha_config_remove_script", "ha_config_remove_scene", "ha_config_remove_group",
+      "ha_config_remove_label", "ha_config_remove_category", "ha_config_remove_calendar_event",
+      "ha_config_delete_dashboard", "ha_config_delete_dashboard_resource"
+    ]
+  },
+  "guard": {
+    "portainer": ["docker_proxy", "kubernetes_proxy"],
+    "home_assistant": ["ha_manage_backup", "ha_manage_updates", "ha_manage_hacs", "ha_manage_app", "ha_call_service"],
+    "unifi": ["*"]
+  },
+  "disableBypassPermissionsMode": true
+}
