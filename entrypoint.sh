@@ -37,7 +37,7 @@ if [ -f /opt/ghidramcp/GhidraMCP.jar ] && [ "${GHIDRA_MCP_ENABLED:-true}" = "tru
   ) &
 fi
 
-cd /workspace
+cd "${RC_DIR:-/workspace}"
 
 logged_in() { claude auth status --json 2>/dev/null | jq -e '.loggedIn == true' >/dev/null; }
 until logged_in; do

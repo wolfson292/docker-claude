@@ -60,7 +60,8 @@ UI with `docker attach claude-rc` (detach with `Ctrl-P Ctrl-Q`).
 | --- | --- | --- |
 | `RC_NAME` | `claude-rc` | Environment name shown in the Claude app. |
 | `RC_PERMISSION_MODE` | `default` | Permission mode for spawned sessions (`default`, `acceptEdits`, `auto`, `plan`, `dontAsk`, `bypassPermissions`). |
-| `RC_SPAWN` | `same-dir` | `same-dir`, `worktree` (needs a git repo in `/workspace`) or `session`. |
+| `RC_SPAWN` | `same-dir` | `same-dir`, `worktree` (needs a git repo in `RC_DIR`) or `session`. |
+| `RC_DIR` | `/workspace` | Folder sessions run in (inside the container). The Claude app labels each remote session with this folder's name, so pick something meaningful, e.g. `/home-lab`. |
 | `RC_EXTRA_ARGS` | | Extra flags for `claude remote-control`. |
 | `PUID` / `PGID` | `1000` | UID/GID of the `claude` user (build arg) and of mounted SMB files. |
 | `INSTALL_GHIDRA` | `true` | Build arg; `false` drops Ghidra, GhidraMCP and the JDK. |
@@ -91,7 +92,7 @@ SMB1_USERNAME=homeassistant
 SMB1_PASSWORD=...
 ```
 
-Each share appears at `/workspace/<SMBn_NAME>`. For Home Assistant, install the
+Each share appears at `$RC_DIR/<SMBn_NAME>`. For Home Assistant, install the
 **Samba share** app and enable the `config` share. Its `allow_hosts` must
 include the Docker host's address. The host needs CIFS support
 (`apt install cifs-utils`).

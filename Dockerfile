@@ -64,6 +64,8 @@ COPY entrypoint.sh merge-config.py /opt/claude-rc/
 RUN chmod 0755 /opt/claude-rc/entrypoint.sh
 
 USER claude
+# Folder sessions run in; the Claude app labels remote sessions with its name
+ENV RC_DIR=/workspace
 ENV HOME=/home/claude PATH=/home/claude/.local/bin:/opt/java/openjdk/bin:/usr/local/bin:/usr/bin:/bin \
     PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 WORKDIR /workspace

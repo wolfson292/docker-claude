@@ -1,4 +1,4 @@
-"""Merge /config/mcp-servers.json into ~/.claude.json and pre-trust /workspace.
+"""Merge /config/mcp-servers.json into ~/.claude.json and pre-trust $RC_DIR.
 
 /config/mcp-servers.local.json (git-ignored) is used instead when it exists.
 Servers listed there overwrite same-named entries in
@@ -62,7 +62,8 @@ else:
 cfg["hasCompletedOnboarding"] = True
 # Pre-answer "Enable Remote Control? (y/n)", which otherwise blocks on the unseen TTY
 cfg["remoteDialogSeen"] = True
-cfg.setdefault("projects", {}).setdefault("/workspace", {})["hasTrustDialogAccepted"] = True
+rc_dir = os.environ.get("RC_DIR") or "/workspace"
+cfg.setdefault("projects", {}).setdefault(rc_dir, {})["hasTrustDialogAccepted"] = True
 
 tmp = cfg_path.with_suffix(".json.tmp")
 tmp.write_text(json.dumps(cfg, indent=2))

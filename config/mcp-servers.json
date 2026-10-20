@@ -38,7 +38,7 @@
     "type": "stdio",
     "command": "uvx",
     "args": ["wireshark-mcp==3.0.0", "serve", "--profile", "core"],
-    "env": { "WIRESHARK_MCP_ALLOWED_DIRS": "/workspace/pcaps" }
+    "env": { "WIRESHARK_MCP_ALLOWED_DIRS": "${RC_DIR}/pcaps" }
   },
   "ghidra": {
     "type": "stdio",

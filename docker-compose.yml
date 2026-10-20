@@ -17,8 +17,10 @@ services:
     tty: true              # remote-control draws a status UI
     stdin_open: true
     env_file: .env
+    environment:
+      RC_DIR: ${RC_DIR:-/workspace}
     shm_size: 1gb          # headless Chromium
     volumes:
       - ${DATA_DIR:-./data}/home:/home/claude
-      - ${DATA_DIR:-./data}/workspace:/workspace
+      - ${DATA_DIR:-./data}/workspace:${RC_DIR:-/workspace}
       - ./config:/config:ro

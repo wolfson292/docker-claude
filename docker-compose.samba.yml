@@ -1,5 +1,5 @@
 # Optional overlay: mount up to two SMB/CIFS shares (e.g. the Home Assistant
-# "Samba share" app's /config) into /workspace/<name>.
+# "Samba share" app's /config) into $RC_DIR/<name>.
 #
 #   COMPOSE_FILE=docker-compose.yml:docker-compose.samba.yml   (in .env)
 #
@@ -10,8 +10,8 @@
 services:
   claude-rc:
     volumes:
-      - smb1:/workspace/${SMB1_NAME:?set SMB1_NAME}
-      - smb2:/workspace/${SMB2_NAME:?set SMB2_NAME}
+      - smb1:${RC_DIR:-/workspace}/${SMB1_NAME:?set SMB1_NAME}
+      - smb2:${RC_DIR:-/workspace}/${SMB2_NAME:?set SMB2_NAME}
 
 volumes:
   smb1:
