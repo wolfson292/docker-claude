@@ -1,0 +1,28 @@
+# Optional overlay: mount up to two SMB/CIFS shares (e.g. the Home Assistant
+# "Samba share" app's /config) into /workspace/<name>.
+#
+#   COMPOSE_FILE=docker-compose.yml:docker-compose.samba.yml   (in .env)
+#
+# The share is mounted when the container starts; if the SMB server is
+# unreachable at that moment the container fails to start, so `docker compose
+# up -d` again once it is back.
+
+services:
+  claude-rc:
+    volumes:
+      - smb1:/workspace/${SMB1_NAME:?set SMB1_NAME}
+      - smb2:/workspace/${SMB2_NAME:?set SMB2_NAME}
+
+volumes:
+  smb1:
+    driver: local
+    driver_opts:
+      type: cifs
+      device: ${SMB1_SHARE:?set SMB1_SHARE}
+      o: "username=${SMB1_USERNAME},password=${SMB1_PASSWORD},uid=${PUID:-1000},gid=${PGID:-1000},file_mode=0664,dir_mode=0775,vers=${SMB_VERSION:-3.1.1},soft,nounix"
+  smb2:
+    driver: local
+    driver_opts:
+      type: cifs
+      device: ${SMB2_SHARE:?set SMB2_SHARE}
+      o: "username=${SMB2_USERNAME},password=${SMB2_PASSWORD},uid=${PUID:-1000},gid=${PGID:-1000},file_mode=0664,dir_mode=0775,vers=${SMB_VERSION:-3.1.1},soft,nounix"

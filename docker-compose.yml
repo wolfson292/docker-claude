@@ -1,0 +1,24 @@
+name: claude-rc
+
+# Settings and secrets come from .env next to this file (copy .env.example).
+
+services:
+  claude-rc:
+    build:
+      context: .
+      args:
+        UID: ${PUID:-1000}
+        GID: ${PGID:-1000}
+        INSTALL_GHIDRA: ${INSTALL_GHIDRA:-true}
+    image: claude-rc:latest
+    container_name: ${CONTAINER_NAME:-claude-rc}
+    hostname: ${RC_NAME:-claude-rc}
+    restart: unless-stopped
+    tty: true              # remote-control draws a status UI
+    stdin_open: true
+    env_file: .env
+    shm_size: 1gb          # headless Chromium
+    volumes:
+      - ${DATA_DIR:-./data}/home:/home/claude
+      - ${DATA_DIR:-./data}/workspace:/workspace
+      - ./config:/config:ro

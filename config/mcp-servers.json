@@ -1,0 +1,104 @@
+{
+  "_comment": "Merged into ~/.claude.json on every start. ${VAR} comes from .env; a server whose variables are unset is skipped. Delete servers you don't want.",
+  "context7": {
+    "type": "stdio",
+    "command": "npx",
+    "args": ["-y", "@upstash/context7-mcp"],
+    "env": {}
+  },
+  "deepwiki": {
+    "type": "http",
+    "url": "https://mcp.deepwiki.com/mcp"
+  },
+  "playwright": {
+    "type": "stdio",
+    "command": "npx",
+    "args": ["-y", "@playwright/mcp@latest", "--headless", "--browser", "chromium", "--executable-path", "/usr/bin/chromium", "--no-sandbox"],
+    "env": {}
+  },
+  "chrome-devtools": {
+    "type": "stdio",
+    "command": "npx",
+    "args": ["-y", "chrome-devtools-mcp@latest", "--headless", "--isolated", "--executablePath=/usr/bin/chromium", "--chrome-arg=--no-sandbox"],
+    "env": { "CHROME_DEVTOOLS_MCP_NO_USAGE_STATISTICS": "1" }
+  },
+  "semgrep": {
+    "type": "stdio",
+    "command": "semgrep",
+    "args": ["mcp"],
+    "env": { "SEMGREP_SEND_METRICS": "off" }
+  },
+  "serena": {
+    "type": "stdio",
+    "command": "serena",
+    "args": ["start-mcp-server", "--context", "claude-code", "--project-from-cwd"],
+    "env": {}
+  },
+  "wireshark": {
+    "type": "stdio",
+    "command": "uvx",
+    "args": ["wireshark-mcp==3.0.0", "serve", "--profile", "core"],
+    "env": { "WIRESHARK_MCP_ALLOWED_DIRS": "/workspace/pcaps" }
+  },
+  "ghidra": {
+    "type": "stdio",
+    "command": "bridge-mcp-ghidra",
+    "args": ["--transport", "stdio"],
+    "env": { "GHIDRA_MCP_URL": "http://127.0.0.1:8089", "GHIDRA_MCP_LOG_LEVEL": "INFO" }
+  },
+  "rea": {
+    "type": "stdio",
+    "command": "rea",
+    "args": ["mcp"],
+    "env": { "GHIDRA_INSTALL_DIR": "/opt/ghidra", "JAVA_HOME": "/opt/java/openjdk" }
+  },
+  "home-assistant-1": {
+    "type": "stdio",
+    "command": "uvx",
+    "args": ["--python", "3.13", "--refresh", "ha-mcp@latest"],
+    "env": { "HOMEASSISTANT_URL": "${HA1_URL}", "HOMEASSISTANT_TOKEN": "${HA1_TOKEN}" }
+  },
+  "home-assistant-2": {
+    "type": "stdio",
+    "command": "uvx",
+    "args": ["--python", "3.13", "--refresh", "ha-mcp@latest"],
+    "env": { "HOMEASSISTANT_URL": "${HA2_URL}", "HOMEASSISTANT_TOKEN": "${HA2_TOKEN}" }
+  },
+  "portainer": {
+    "type": "stdio",
+    "command": "uvx",
+    "args": ["--from", "mcp-portainer~=2.42.0", "mcp-portainer"],
+    "env": { "PORTAINER_URL": "${PORTAINER_URL}", "PORTAINER_API_KEY": "${PORTAINER_API_KEY}" }
+  },
+  "unifi-network": {
+    "type": "stdio",
+    "command": "uvx",
+    "args": ["unifi-network-mcp@latest"],
+    "env": {
+      "UNIFI_MCP_HTTP_ENABLED": "false",
+      "UNIFI_TOOL_PERMISSION_MODE": "confirm",
+      "UNIFI_TOOL_REGISTRATION_MODE": "lazy",
+      "UNIFI_NETWORK_HOST": "${UNIFI_HOST}",
+      "UNIFI_NETWORK_PORT": "443",
+      "UNIFI_NETWORK_VERIFY_SSL": "false",
+      "UNIFI_NETWORK_USERNAME": "${UNIFI_USERNAME}",
+      "UNIFI_NETWORK_PASSWORD": "${UNIFI_PASSWORD}",
+      "UNIFI_SITE": "${UNIFI_SITE}"
+    }
+  },
+  "unifi-protect": {
+    "type": "stdio",
+    "command": "uvx",
+    "args": ["unifi-protect-mcp@latest"],
+    "env": {
+      "UNIFI_MCP_HTTP_ENABLED": "false",
+      "UNIFI_TOOL_PERMISSION_MODE": "confirm",
+      "UNIFI_TOOL_REGISTRATION_MODE": "lazy",
+      "UNIFI_PROTECT_HOST": "${UNIFI_HOST}",
+      "UNIFI_PROTECT_PORT": "443",
+      "UNIFI_PROTECT_VERIFY_SSL": "false",
+      "UNIFI_PROTECT_USERNAME": "${UNIFI_USERNAME}",
+      "UNIFI_PROTECT_PASSWORD": "${UNIFI_PASSWORD}"
+    }
+  }
+}

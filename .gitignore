@@ -1,0 +1,5 @@
+.env
+data/
+config/skills/
+config/*.local.json
+.DS_Store
