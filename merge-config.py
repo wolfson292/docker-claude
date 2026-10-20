@@ -60,6 +60,8 @@ else:
     print(f"[claude-rc] {servers_path} not found; leaving MCP servers unchanged")
 
 cfg["hasCompletedOnboarding"] = True
+# Pre-answer "Enable Remote Control? (y/n)", which otherwise blocks on the unseen TTY
+cfg["remoteDialogSeen"] = True
 cfg.setdefault("projects", {}).setdefault("/workspace", {})["hasTrustDialogAccepted"] = True
 
 tmp = cfg_path.with_suffix(".json.tmp")
